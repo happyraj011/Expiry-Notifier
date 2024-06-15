@@ -2,7 +2,8 @@
 import dbConnect from '@/lib/dbConnect';
 import bcryptjs from 'bcryptjs'
 import User from '@/model/User';
-export async function POST(request:Request){
+import { NextRequest, NextResponse } from 'next/server';
+export async function POST(request:NextRequest){
     await dbConnect();
     
     try {
@@ -10,7 +11,7 @@ export async function POST(request:Request){
         const hashedPassword=await bcryptjs.hashSync(password,10);
         const verifiedByEmail=await User.findOne({email});
         if(verifiedByEmail){
-            return Response.json({
+            return NextResponse.json({
                 success:false,
                 message:"emailId is already used "
             },{status:400})
@@ -23,14 +24,14 @@ export async function POST(request:Request){
             address
         })
         await newUser.save();
-        return Response.json({
+        return NextResponse.json({
             success:true,
             message:"signup successfully"
         },{status:200})
 
     } catch (error) {
         console.log("signup error",(error));
-        return Response.json({
+        return NextResponse.json({
             success:false,
             message:"signup error"
         },{
