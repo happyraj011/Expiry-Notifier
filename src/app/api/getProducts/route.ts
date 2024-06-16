@@ -3,13 +3,20 @@ import dbConnect from "@/lib/dbConnect";
 import Product from "@/model/Product";
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function GET(request:NextRequest) {
     dbConnect();
    try {
     const user=await getDataFromToken(request);
     const product = await Product.aggregate([
         { $match: { userId: user } },
+        {
+            $sort:{
+               expiryDate:-1
+            }
+        },
+        {
+            $limit:10
+        }
       ]).exec();
 
 
