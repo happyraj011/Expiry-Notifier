@@ -35,7 +35,7 @@ export default function page() {
         try {
           setLoading(true);
           setErrorMessage('');
-          const res=await fetch('/api/sign-up',{
+          const res=await fetch('/api/login',{
             method:'POST',
             headers:{
               'Content-Type':'application/json'
@@ -51,7 +51,7 @@ export default function page() {
   
           setLoading(false);
           if(res.ok){
-             router.push('/login')
+             router.push('/')
           }
   
         } catch (error:any) {
