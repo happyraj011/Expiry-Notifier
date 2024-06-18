@@ -30,8 +30,8 @@ export default function Header() {
           } dismissOnClick={false}>
         
         <Dropdown.Header>
-        <span className="block text-sm">Bonnie Green</span>
-        <span className="block truncate text-sm font-medium">bonnie@flowbite.com</span>
+        <span className="block text-sm">Name</span>
+      
       </Dropdown.Header>
       <Dropdown.Item icon={HiViewGrid}>Dashboard</Dropdown.Item>
       <Dropdown.Item icon={HiCog}>Settings</Dropdown.Item>
@@ -48,7 +48,7 @@ export default function Header() {
         <Navbar.Link href="#" active>
           Home
         </Navbar.Link>
-        <Navbar.Link as={Link} href="/expiryItem">
+        <Navbar.Link as={Link} href="/expiryItems">
           ExpiryItem
         </Navbar.Link>
         <Navbar.Link href="/about">About</Navbar.Link>
