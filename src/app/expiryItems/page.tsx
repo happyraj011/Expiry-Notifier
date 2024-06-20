@@ -35,11 +35,31 @@ export default function page() {
             console.log(error.message)
          }
      }
+
+     
   
     return () => {
        fetchProducts()
     }
   }, [])
+
+
+  useEffect(() => {
+    const fetchExpiryProducts=async()=>{
+        try {
+            await axios.get<APIResponse>('/api/checkExpiryDates');
+           
+        } catch (error:any) {
+           console.log(error.message)
+        }
+    }
+
+    
+ 
+   return () => {
+      fetchExpiryProducts()
+   }
+ }, [])
 
 
 
