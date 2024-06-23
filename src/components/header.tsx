@@ -1,11 +1,43 @@
 "use client"
-import { Avatar, Button, Dropdown, Navbar, NavbarCollapse, NavbarLink, NavbarToggle } from 'flowbite-react'
+import axios from 'axios'
+import { Avatar, Button, Dropdown, Navbar} from 'flowbite-react'
 import Link from 'next/link'
-import React from 'react'
-import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from 'react-icons/hi'
-import { IoIosMenu } from 'react-icons/io'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+
+interface user{
+   username:"",
+   email:""
+}
 
 export default function Header() {
+   
+  const router=useRouter();
+  const [data, setData] = useState<user| null>(null)
+  
+  useEffect(() => {
+   
+    const getUserDetails = async () => {
+      const res = await axios.get('/api/user')
+      setData(res.data.data)
+     }
+    return () => {
+        getUserDetails()
+    }
+  }, [])
+    
+
+   const logout=async()=>{
+          try {
+            await axios.get("api/logout");
+            router.push('/login')
+            setData(null)
+          } catch (error:any) {
+            console.log(error.message)
+          }
+   }
+
+
   return (
     
     <Navbar className='border-b-2'>
@@ -21,26 +53,47 @@ export default function Header() {
 
       
 
-      <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            <IoIosMenu />
-          } dismissOnClick={false}>
-        
-        <Dropdown.Header>
-        <span className="block text-sm">Name</span>
-      
-      </Dropdown.Header>
-      <Dropdown.Item icon={HiViewGrid}>Dashboard</Dropdown.Item>
-      <Dropdown.Item icon={HiCog}>Settings</Dropdown.Item>
-      <Dropdown.Item icon={HiCurrencyDollar}>Earnings</Dropdown.Item>
-      <Dropdown.Divider />
-      <Dropdown.Item icon={HiLogout}>Sign out</Dropdown.Item>
-        </Dropdown>
-      
+
+      <div className='flex gap-2 md:order-2'>
+       
+        {data ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt='user' rounded />
+            }
+          >
+            <Dropdown.Header>
+              <span className='block text-sm'>{data.username}</span>
+              <span className='block text-sm font-medium truncate'>
+                {data.email}
+              </span>
+            </Dropdown.Header>
+            <Link href={'/dashboard?tab=profile'}>
+              <Dropdown.Item>Profile</Dropdown.Item>
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <Link href='/login'>
+            <Button gradientDuoTone='purpleToBlue' outline>
+              Sign In
+            </Button>
+          </Link>
+        )}
+        <Navbar.Toggle />
       </div>
+
+
+
+
+
+
+
+
+
       
 
        
