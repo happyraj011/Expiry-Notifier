@@ -64,7 +64,7 @@ export default function page() {
 
 
   
-
+   
    const handleDeleteProducts=async()=>{
       setShowModal(false);
       try {
@@ -96,7 +96,11 @@ export default function page() {
       const expiry=new Date(dateString);
       const timeDifference=expiry.getTime()-today.getTime();
       const daysDifference=Math.ceil(timeDifference/ (1000 * 3600 * 24))
+      if(daysDifference<=0){
+        return 0;
+      }
       return daysDifference;
+     
    }
 
    

@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
       }
     ]).exec();
 
+    
     if (!product || product.length === 0) {
       return NextResponse.json(
         { message: 'No expired products found', success: false },
@@ -41,17 +42,16 @@ export async function GET(request: NextRequest) {
       html: generateExpiryEmailHtml(product)
     };
 
-   
-    cron.schedule('* * * * *', async () => {
+    
+    cron.schedule('* * *', async () => {
         await transport.sendMail(mailOptions);
-      
-      
     });
-
+   
     return NextResponse.json(
       { message: ' email sent', success: true },
       { status: 200 }
     );
+
   } catch (error: any) {
     console.log(" checking expiry dates Error", { error });
     return NextResponse.json(

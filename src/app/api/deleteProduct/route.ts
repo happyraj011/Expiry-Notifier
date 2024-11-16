@@ -11,7 +11,7 @@ export async function DELETE(request:NextRequest) {
      const url=new URL(request.url);
      const _id=url.searchParams.get("_id");
      const product=await Product.findById(_id)
-
+     
      
       if(!product){
            return  NextResponse.json({

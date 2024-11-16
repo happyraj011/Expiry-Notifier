@@ -20,8 +20,7 @@ export default function page() {
   
   const handleChange=(e:any)=>{
     setFormData({...formData,[e.target.id]:e.target.value.trim()});
-
-}
+   }
 
 const handleSubmit=async(e:any)=>{
   e.preventDefault();

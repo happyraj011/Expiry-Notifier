@@ -11,7 +11,7 @@ export async function GET(request:NextRequest) {
         { $match: { userId: user } },
         {
             $sort:{
-               expiryDate:-1
+               expiryDate:1
             }
         },
         {

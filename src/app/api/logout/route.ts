@@ -1,6 +1,8 @@
+import dbConnect from "@/lib/dbConnect";
 import { NextResponse } from "next/server";
 
 export async function GET() {
+    dbConnect();
     try {
         const response = NextResponse.json(
             {

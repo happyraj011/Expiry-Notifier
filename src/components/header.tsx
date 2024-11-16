@@ -98,14 +98,17 @@ export default function Header() {
 
        
       <Navbar.Collapse >
-        <Navbar.Link href="#" active>
+        <Navbar.Link href="/" active>
           Home
+        </Navbar.Link>
+        <Navbar.Link as={Link} href="/addProduct">
+          AddProduct
         </Navbar.Link>
         <Navbar.Link as={Link} href="/expiryItems">
           ExpiryItem
         </Navbar.Link>
         <Navbar.Link href="/about">About</Navbar.Link>
-        <Navbar.Link href="/contact">Contact</Navbar.Link>
+       
       </Navbar.Collapse>
    
       </Navbar>
