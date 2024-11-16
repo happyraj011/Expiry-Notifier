@@ -1,38 +1,38 @@
-"use client"
-import { Alert, Button, Checkbox, Label, Spinner, TextInput } from 'flowbite-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation'
-import React from 'react'
+"use client";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React from "react";
 
-export default function page() {
+export default function AddProductPage() {
   const router = useRouter();
   const [formData, setFormData] = React.useState({
     productName: "",
     quantity: "",
     category: "",
     manufacturedDate: "",
-    expiryDate: ""
+    expiryDate: "",
   });
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
-  }
+  };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.productName || !formData.quantity || !formData.category || !formData.manufacturedDate || !formData.expiryDate) {
-      return setErrorMessage('All fields are required');
+      return setErrorMessage("All fields are required");
     }
 
     try {
       setLoading(true);
-      setErrorMessage('');
-      const res = await fetch('/api/addProduct', {
-        method: 'POST',
+      setErrorMessage("");
+      const res = await fetch("/api/addProduct", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -44,13 +44,13 @@ export default function page() {
 
       setLoading(false);
       if (res.ok) {
-        router.push('/');
+        router.push("/");
       }
     } catch (error: any) {
       setErrorMessage(error.message);
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-blue-50 text-gray-300 flex items-center justify-center">
@@ -59,7 +59,9 @@ export default function page() {
         <div className="flex flex-col md:flex-row items-center gap-5">
           <div className="flex-1">
             <Link href="/" className="font-bold text-4xl">
-              <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">Expiry</span>
+              <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
+                Expiry
+              </span>
               Notifier
             </Link>
             <p className="text-sm mt-5">Add Your Product</p>
@@ -90,13 +92,16 @@ export default function page() {
               <Button
                 className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white"
                 type="submit"
-                disabled={loading}>
+                disabled={loading}
+              >
                 {loading ? (
                   <>
                     <Spinner size="sm" />
                     <span className="pl-3">Loading...</span>
                   </>
-                ) : 'Submit'}
+                ) : (
+                  "Submit"
+                )}
               </Button>
             </form>
             {errorMessage && (
