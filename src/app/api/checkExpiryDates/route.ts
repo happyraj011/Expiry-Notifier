@@ -4,13 +4,15 @@ import Product from "@/model/Product";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import cron from "node-cron";
+import User from "@/model/User";
 
 export async function GET(request: NextRequest) {
   dbConnect();
   try {
-    const user = await getDataFromToken(request);
+    const userId = await getDataFromToken(request);
+    const user = await User.findById(userId).exec();
     const product = await Product.aggregate([
-      { $match: { userId: user } },
+      { $match: { userId: userId } },
       { $match: { expiryDate: { $lte: new Date(Date.now()) } } },
       {
         $sort: { expiryDate: -1 }
@@ -24,7 +26,8 @@ export async function GET(request: NextRequest) {
         { status: 404 }
       );
     }
-
+    
+    const userEmail = user.email;
    
     const transport = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
@@ -37,7 +40,7 @@ export async function GET(request: NextRequest) {
 
     const mailOptions = {
       from: 'raj@raj.email',
-      to: 'welcome@gmail.com',
+      to: userEmail,
       subject: 'Product Expiry Notification',
       html: generateExpiryEmailHtml(product)
     };

@@ -34,6 +34,23 @@ export default function Page() {
     fetchProducts()
   }, [])
 
+
+  useEffect(() => {
+    const fetchExpiryProducts=async()=>{
+        try {
+            await axios.get<APIResponse>('/api/checkExpiryDates');
+           
+        } catch (error:any) {
+           console.log(error.message)
+        }
+    }
+    
+ 
+   return () => {
+      fetchExpiryProducts()
+   }
+      }, [])
+
   const handleDeleteProducts = async () => {
     setShowModal(false);
     try {

@@ -61,7 +61,7 @@ export default function Header() {
             label={
               <Avatar
                 alt="User Avatar"
-                img="/path-to-user-avatar.jpg" // Replace with actual user avatar URL
+                img="/path-to-user-avatar.jpg" 
                 rounded
                 className="w-10 h-10"
               />
@@ -71,7 +71,7 @@ export default function Header() {
               <span className="block text-sm font-semibold">{data.username}</span>
               <span className="block text-sm text-gray-500 truncate">{data.email}</span>
             </Dropdown.Header>
-            <Link href="/dashboard?tab=profile">
+            <Link href="/profile">
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
