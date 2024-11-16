@@ -6,75 +6,78 @@ import Link from 'next/link';
 export default function FooterCom() {
   return (
     <Footer container className="bg-gray-900 text-white">
-      <div className="w-full max-w-7xl mx-auto px-8 py-8">
+      <div className="w-full max-w-7xl mx-auto px-8 py-2">
         {/* Main Footer Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
           {/* Branding Section */}
           <div>
             <Link
               href="/"
-              className="self-center text-3xl font-bold text-gray-100 whitespace-nowrap"
+              className="self-center text-2xl font-bold text-gray-100 whitespace-nowrap"
             >
-              <span className="px-4 py-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded text-white text-4xl">
+              <span className="px-3 py-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white text-3xl">
                 Expiry
               </span>
-              <span className="ml-3 text-3xl">Notifier</span>
+              <span className="ml-2 text-2xl">Notifier</span>
             </Link>
           </div>
 
-          {/* Links Section */}
-          <div>
-            <Footer.Title title="About" className="text-gray-300 text-lg" />
-            <Footer.LinkGroup col>
-              <Footer.Link
-                href="/about"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline text-gray-400 text-sm"
-              >
-                Expiry Notifier
-              </Footer.Link>
-            </Footer.LinkGroup>
-          </div>
+          {/* Links in a Single Row */}
+          <div className="flex flex-wrap justify-between gap-x-8">
+            {/* About Section */}
+            <div>
+              <Footer.Title title="About" className="text-gray-300 text-lg" />
+              <Footer.LinkGroup col>
+                <Footer.Link
+                  href="/about"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-gray-400 text-sm"
+                >
+                  Expiry Notifier
+                </Footer.Link>
+              </Footer.LinkGroup>
+            </div>
 
-          {/* Follow Us */}
-          <div>
-            <Footer.Title title="Follow us" className="text-gray-300 text-lg" />
-            <Footer.LinkGroup col>
-              <Footer.Link
-                href="https://www.github.com/happyraj011"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline text-gray-400 text-sm"
-              >
-                Github
-              </Footer.Link>
-              <Footer.Link
-                href="#"
-                className="hover:underline text-gray-400 text-sm"
-              >
-                Discord
-              </Footer.Link>
-            </Footer.LinkGroup>
-          </div>
+            {/* Follow Us Section */}
+            <div>
+              <Footer.Title title="Follow us" className="text-gray-300 text-lg" />
+              <Footer.LinkGroup col>
+                <Footer.Link
+                  href="https://www.github.com/happyraj011"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-gray-400 text-sm"
+                >
+                  Github
+                </Footer.Link>
+                <Footer.Link
+                  href="#"
+                  className="hover:underline text-gray-400 text-sm"
+                >
+                  Discord
+                </Footer.Link>
+              </Footer.LinkGroup>
+            </div>
 
-          {/* Legal */}
-          <div>
-            <Footer.Title title="Legal" className="text-gray-300 text-lg" />
-            <Footer.LinkGroup col>
-              <Footer.Link
-                href="#"
-                className="hover:underline text-gray-400 text-sm"
-              >
-                Privacy Policy
-              </Footer.Link>
-              <Footer.Link
-                href="#"
-                className="hover:underline text-gray-400 text-sm"
-              >
-                Terms &amp; Conditions
-              </Footer.Link>
-            </Footer.LinkGroup>
+            {/* Legal Section */}
+            <div>
+              <Footer.Title title="Legal" className="text-gray-300 text-lg" />
+              <Footer.LinkGroup col>
+                <Footer.Link
+                  href="#"
+                  className="hover:underline text-gray-400 text-sm"
+                >
+                  Privacy Policy
+                </Footer.Link>
+                <Footer.Link
+                  href="#"
+                  className="hover:underline text-gray-400 text-sm"
+                >
+                  Terms &amp; Conditions
+                </Footer.Link>
+              </Footer.LinkGroup>
+            </div>
           </div>
         </div>
 
