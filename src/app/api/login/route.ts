@@ -3,11 +3,11 @@ import User from "@/model/User";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
-dbConnect();
+   
 
 
 export async function POST(request: NextRequest) {
-
+  await dbConnect();
   try {
     const reqBody=await request.json();
     const { email, password } = reqBody;

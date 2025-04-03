@@ -16,31 +16,30 @@ if (!cached) {
 
 async function dbConnect() {
     if (cached.conn) {
+        console.log("Using existing database connection");
         return cached.conn;
     }
+
     if (!cached.promise) {
         const opts = {
-            bufferCommands: false,
+            bufferCommands: false, // Disable command buffering
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
         };
-        cached.promise = mongoose.connect(MONGODB_URI, opts).then(mongoose => {
-            console.log('Db connected');
+
+        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+            console.log('Database Connected Successfully');
             return mongoose;
         });
     }
+
     try {
         cached.conn = await cached.promise;
-        return {
-            success: true,
-            message: "Connection successfully",
-            status: 200
-        };
-    } catch (e) {
+        return cached.conn; // Return the connection, not an object
+    } catch (error) {
         cached.promise = null;
-        return {
-            success: false,
-            message: "Connection error",
-            status: 500 
-        };
+        console.error("Database Connection Error:", error);
+        throw new Error("Database connection failed");
     }
 }
 
