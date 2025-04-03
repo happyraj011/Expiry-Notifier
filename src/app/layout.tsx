@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header  from "@/components/header";
+import Header from "@/components/header";
 import FooterCom from "@/components/footer";
+import { UserProvider } from "@/context/UserContext";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,22 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    
     <html lang="en">
-    
       <body className={inter.className}>
-      <div >
-    <Header />
-    </div>
-    {children}
-    <div>
-    <FooterCom/>
-    </div>
-    
+        <UserProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <FooterCom />
+          </div>
+        </UserProvider>
       </body>
-    
-
-     
     </html>
   );
 }

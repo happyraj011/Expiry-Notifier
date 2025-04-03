@@ -1,38 +1,20 @@
 "use client";
 
-import axios from "axios";
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-
-interface User {
-  username: string;
-  email: string;
-}
+import { useUser } from "@/context/UserContext";
+import axios from "axios";
 
 export default function Header() {
   const router = useRouter();
-  const [data, setData] = useState<User | null>(null);
-
-  useEffect(() => {
-    const getUserDetails = async () => {
-      try {
-        const res = await axios.get("/api/user");
-        setData(res.data.data);
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-
-    getUserDetails();
-  }, []);
+  const { user, setUser, fetchUser } = useUser(); 
 
   const logout = async () => {
     try {
       await axios.get("/api/logout");
+      setUser(null); 
       router.push("/login");
-      setData(null);
     } catch (error: any) {
       console.error(error.message);
     }
@@ -40,7 +22,6 @@ export default function Header() {
 
   return (
     <Navbar className="border-b-2 bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg">
-      {/* Logo */}
       <Link
         href="/"
         className="text-2xl font-extrabold text-gray-800 tracking-wide flex items-center gap-2"
@@ -51,31 +32,41 @@ export default function Header() {
         Notifier
       </Link>
 
-      {/* Right Section */}
       <div className="flex gap-4 md:order-2 items-center">
-        {/* User Dropdown or Sign-In Button */}
-        {data ? (
+        {user ? (
           <Dropdown
             arrowIcon={false}
             inline
             label={
               <Avatar
                 alt="User Avatar"
-                img="/path-to-user-avatar.jpg" 
+                img="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp"
                 rounded
-                className="w-10 h-10"
+                className="w-10 h-10  transition-all"
               />
             }
           >
-            <Dropdown.Header>
-              <span className="block text-sm font-semibold">{data.username}</span>
-              <span className="block text-sm text-gray-500 truncate">{data.email}</span>
-            </Dropdown.Header>
-            <Link href="/profile">
-              <Dropdown.Item>Profile</Dropdown.Item>
-            </Link>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+            <div className="w-48 bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
+              <Dropdown.Header className="bg-gradient-to-r from-purple-100 to-blue-100 p-3">
+                <span className="block text-sm font-semibold">{user.username}</span>
+                <span className="block text-sm text-gray-600 truncate">{user.email}</span>
+              </Dropdown.Header>
+              
+              <Link href="/profile">
+                <Dropdown.Item className="px-4 py-2 hover:bg-purple-100 hover:text-purple-800 transition-all">
+                  Profile
+                </Dropdown.Item>
+              </Link>
+
+              <Dropdown.Divider />
+
+              <Dropdown.Item
+                onClick={logout}
+                className="px-4 py-2 text-red-600 hover:bg-red-100 transition-all"
+              >
+                Logout
+              </Dropdown.Item>
+            </div>
           </Dropdown>
         ) : (
           <Link href="/login">
@@ -85,11 +76,9 @@ export default function Header() {
           </Link>
         )}
 
-        {/* Navbar Toggle (Mobile) */}
         <Navbar.Toggle />
       </div>
 
-      {/* Navbar Links */}
       <Navbar.Collapse>
         <Navbar.Link href="/" active>
           Home
