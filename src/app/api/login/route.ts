@@ -2,72 +2,73 @@ import dbConnect from "@/lib/dbConnect";
 import User from "@/model/User";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers"; 
+import { NextResponse } from "next/server";
 
+export async function POST(request: Request) {
+  await dbConnect();
 
-dbConnect();
-
-export async function POST(request: NextRequest) {
   try {
-    const reqBody = await request.json();
-    const { email, password } = reqBody;
+    const { email, password } = await request.json();
 
-    
-    const validUser = await User.findOne({ email });
-    if (!validUser) {
+    // Validate input
+    if (!email || !password) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "User does not exist",
-        },
+        { success: false, message: "Email and password are required" },
         { status: 400 }
       );
     }
 
-    
-    const validPassword = await bcryptjs.compare(password, validUser.password);
-    if (!validPassword) {
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "Incorrect password",
-        },
-        { status: 400 }
+        { success: false, message: "Invalid credentials" },
+        { status: 401 }
       );
     }
 
-   
+    // Validate password
+    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        { success: false, message: "Invalid credentials" },
+        { status: 401 }
+      );
+    }
+
+    // Create token
     const tokenData = {
-      id: validUser._id,
-      username: validUser.username,
-      email: validUser.email,
+      id: user._id,
+      username: user.username,
+      email: user.email
     };
 
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
-      expiresIn: "1d",
+      expiresIn: "1d"
     });
 
-  
-    cookies().set("token", token, {
+    // Create response
+    const response = NextResponse.json(
+      { success: true, message: "Login successful" },
+      { status: 200 }
+    );
+
+    // Set cookie
+    response.cookies.set("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 24 * 60 * 60, 
-      path: "/",
+      maxAge: 86400, // 1 day in seconds
+      path: "/"
     });
 
-    return NextResponse.json({
-      message: "Login successful",
-      success: true,
-    });
+    return response;
+
   } catch (error: any) {
+    console.error("Login error:", error);
     return NextResponse.json(
-      {
-        success: false,
-        error: error.message,
-      },
-      { status: 500 } 
+      { success: false, message: error.message || "Login failed" },
+      { status: 500 }
     );
   }
 }

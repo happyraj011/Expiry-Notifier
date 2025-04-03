@@ -12,9 +12,17 @@ export default function Header() {
 
   const logout = async () => {
     try {
-      await axios.get("/api/logout");
-      setUser(null); 
-      router.push("/login");
+      const response = await fetch('/api/logout', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setUser(null); 
+        router.push("/login");
+      }
     } catch (error: any) {
       console.error(error.message);
     }

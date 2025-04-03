@@ -28,6 +28,7 @@ export const config = {
     '/signup',
     '/addProduct',
     '/expiryItems'
+   
   
   ]
 }
